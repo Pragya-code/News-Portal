@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Setup -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepal News Portal</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Navigation link style */
+        .nav-link {
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .nav-link:hover {
+            color: red;
+        }
+
+        /* Footer links */
+        .footer-link {
+            display: block;
+            color: #ccc;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+
+<!-- ================= HEADER ================= -->
+<header class="bg-gray-1000w-full"></header>
+
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        
+        <!-- LOGO -->
+        <div class="flex items-center space-x-2">
+            <div class="bg-red-600 text-white px-3 py-1 font-bold text-xl">
+                DN
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Dev's News</h1>
+                <p class="text-xs text-gray-500">BIC FIRST ONLINE NEWS PORTAL</p>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE (DATE / ICONS) -->
+        <div class="hidden md:flex items-center space-x-4 text-gray-600">
+            <span id="date"></span>
+           
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= NAVBAR ================= -->
+<nav class="bg-white border-b sticky top-0">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+
+        <!-- Menu -->
+        <div class="flex space-x-4">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Feature</a>
+            <a href="#" class="nav-link ">Explainer</a>
+            <a href="#" class="nav-link">Long Read</a>
+            <a href="#" class="nav-link">Politics</a>
+            <a href="#" class="nav-link">Business</a>
+        </div>
+
+        <!-- Icons -->
+        <div class="flex space-x-4">
+            <i class="fas fa-search"></i>
+            <i class="far fa-bookmark"></i>
+            <i class="far fa-moon"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+
+    </div>
+</nav>
+
+
+<!-- ================= HERO SECTION ================= -->
+<section class="container mx-auto px-4 py-8">
+       <div id="news-container"></div> 
+
+    <div class="relative h-[400px] rounded-lg overflow-hidden">
+        
+        <!-- Image -->
+        <img src="image/image.png"
+             class="w-full h-full object-cover">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-gray-900 text-white py-10">
+
+    <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
+
+        <!-- Contact -->
+        <div>
+            <h3 class="text-xl font-bold mb-4">Contact</h3>
+            <p>Biratnagar</p>
+            <p>Email: devsnews2@gmail.com</p>
+        </div>
+
+        <!-- Team -->
+        <div>
+            <h3 class="text-xl font-bold mb-4">Team</h3>
+            <p>Developer: Ugesh Dhungel</p>
+            <p>Developer: Liza Rajbanshi</p>
+            <p>Developer: Pragya Rajbanshi </p>
+
+            <p>Project Manager: Shrejal Bhattarai</p>
+            <p>Business Analyst: Anuska Pokharel</p>
+        </div>
+
+        <!-- Links -->
+        <div>
+            <h3 class="text-xl font-bold mb-4">Useful Links</h3>
+            <a href="#" class="footer-link">देश</a>
+            <a href="#" class="footer-link">राजनीति</a>
+            <a href="#" class="footer-link">स्वास्थ्य</a>
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
