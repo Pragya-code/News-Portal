@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  Dev's News </title>
+
+    <!-- Icons & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="light">
+
+    <!-- HEADER -->
+    <header>
+    <div class="header-overlay">
+        <div class="nav-top-bar">
+            <div class="logo-group">
+                <a href="#" class="logo-text">
+                    Dev's<span>News</span>
+                </a>
+            </div>
+        
+        <div class="header-content">
+            <h1>Dev's News </h1>
+            <p>BIC first's News Website
+            </p>
+            <div class="scroll-indicator">
+                <span>Scroll Down</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="main">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>News</h2>
+            </div>
+
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#about">FEATURE</a></li>
+                <li><a href="#skills">EXPLAINER</a></li>
+                <li><a href="#education">POLITICS</a></li>
+                <li><a href="#contact">BUSINESS</a></li>
+            </ul>
+
+            <div class="theme-container">
+                <button id="themeBtn">
+                    <i class="fas fa-moon"></i><span>Switch Mode</span>
+                </button>
+            </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+  
+
+</div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>The Pulse <br><span>OF </span> <br>The Nation</h1>
+            <p>Breaking barriers, delivering truth, and keeping you connected to the world.</p>
+
+        
+        </div>
+      <!--floting card-->
+        <div class="hero-visual">
+            <div class="floating-card card-1">
+               <i class="fas fa-bolt"></i>
+                <span>Breaking News</span>
+            </div>
+            <div class="floating-card card-2">
+                <i class="fas fa-pen-nib"></i>
+                <span>Opinion & Analysis</span>
+            </div>
+            <div class="floating-card card-3">
+                <i class="fas fa-rss"></i>
+                <span>Live Updates</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="news-section">
+    <div id="newsContainer"></div>
+</section>
+
+
+    <!--CONTACT-->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+
+            <div class="contact-container">
+
+                <div class="contact-info">
+                    <h3>Let's Connect</h3>
+                    <p>Our portal is open to guest columnists and creative photojournalists. Join the pulse of the nation.</p>
+
+                    <div class="contact-methods">
+
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>news@example.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+977 9800000000</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Location</h4>
+                                <p>Biratnagar-3, Nepal</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SOCIAL LINKS -->
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/ugesh-dhungel-644629260" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+
+                        <a href="https://github.com/UGESHDHUNGEL" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+
+                        <a href="https://www.instagram.com/maybe_ugesh" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CONTACT FORM -->
+                <div class="contact-form-container">
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" placeholder="Enter your message" rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <span>Send Message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+
+                    <p id="formMessage"></p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+<!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+
+                <div class="footer-logo">
+                    <a href="#" class="logo-text">
+                    Dev's<span>News</span>
+                </a>
+                </div>
+
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>Developer: Ugesh Dhungel</p>
+                  <p>Developer: Liza Rajbhanshi</p>
+                    <p>Developer: Pragya Rajbhanshi</p>
+                      <p>Project Manager: Shrejal Bhatarai</p>
+                        <p>Bussines Analyst: Anuska Pokharel</p>
+                <p>&copy; 2026 Dev's news . Thank You for Visiting.</p>
+            </div>
+        </div>
+    </footer>
+    
+   <!-- JavaScript File-->
+    <script src="main.js"></script>
+
+</body>
+</html>
