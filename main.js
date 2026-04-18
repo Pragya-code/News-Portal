@@ -2,13 +2,6 @@
 const API_KEY = "NxwAVPiNyt9-Z0d6FSnxh03iLDN88VuWPs0XF7efjltdlDLE";
 const BASE_URL = "https://api.currentsapi.services/v1/latest-news";
 const SEARCH_URL = "https://api.currentsapi.services/v1/search";
-const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
-
-const NEPAL_FEEDS = [
-  { url: "https://kathmandupost.com/feed", source: "Kathmandu Post" },
-  { url: "https://myrepublica.nagariknetwork.com/feed", source: "MyRepublica" },
-  { url: "https://english.onlinekhabar.com/feed", source: "OnlineKhabar" },
-];
 
 // ===== STATE =====
 let savedNews = JSON.parse(localStorage.getItem("savedNews") || "[]");
@@ -75,50 +68,56 @@ function populateCalendar() {
   if (g("calMonthYear")) g("calMonthYear").textContent = months[now.getMonth()] + " " + now.getFullYear();
 }
 
-// ===== NEPAL RSS =====
-async function fetchNepalRSS(feedObj) {
-  const cacheKey = "nepal_" + feedObj.source.replace(/\s/g, "_");
+// ===== NEPAL NEWS via Currents Search API =====
+// FIX: Uses /v1/search with keywords="Nepal" — most reliable method on free tier.
+// The /latest-news country=NP filter is unreliable and returns empty on free plans.
+async function fetchAllNepalNews() {
+  const cacheKey = "nepal_currents";
   const cached = getCached(cacheKey);
-  if (cached) return cached;
+  if (cached) return shuffle(cached);
+
+  // Use the Search endpoint with "Nepal" as keyword — always returns results
+  const url = SEARCH_URL + "?apiKey=" + API_KEY + "&keywords=Nepal&language=en&page_size=20";
+  console.log("[DevNews] Fetching Nepal news via Search API...");
+
   try {
-    const res = await fetch(RSS2JSON + encodeURIComponent(feedObj.url) + "&count=20");
+    const res = await fetch(url);
     const data = await res.json();
-    if (data.status !== "ok") return [];
-    const articles = (data.items || []).map(item => ({
-      title: item.title || "",
-      description: item.description ? item.description.replace(/<[^>]*>/g, "").slice(0, 200) : "",
-      link: item.link || "",
-      image_url: item.enclosure?.link || item.thumbnail || null,
-      pubDate: item.pubDate || "",
-      category: ["National"],
-      source: feedObj.source,
+
+    if (data.status !== "ok") {
+      showFetchError(data.message || "Could not load Nepal news.");
+      const stale = getCached(cacheKey + "_stale");
+      return stale ? shuffle(stale) : [];
+    }
+
+    const results = (data.news || []).map(a => ({
+      title: a.title,
+      description: a.description,
+      link: a.url,
+      image_url: a.image && a.image !== "None" ? a.image : null,
+      pubDate: a.published,
+      category: Array.isArray(a.category) ? a.category : [a.category],
+      source: "National",
       isNepal: true,
     }));
-    setCached(cacheKey, articles);
-    setCached(cacheKey + "_stale", articles);
-    return articles;
+
+    if (!results.length) {
+      showFetchError("No Nepal news found. Try again shortly.");
+      return getCached(cacheKey + "_stale") || [];
+    }
+
+    setCached(cacheKey, results);
+    setCached(cacheKey + "_stale", results);
+    return shuffle(results);
+
   } catch (e) {
-    console.error("[DevNews] RSS failed:", feedObj.source, e.message);
-    return getCached(cacheKey + "_stale") || [];
+    showFetchError("Network error loading Nepal news.");
+    const stale = getCached(cacheKey + "_stale");
+    return stale ? shuffle(stale) : [];
   }
 }
 
-async function fetchAllNepalNews() {
-  const cacheKey = "nepal_all";
-  const cached = getCached(cacheKey);
-  if (cached) return shuffle(cached);
-  const results = await Promise.all(NEPAL_FEEDS.map(f => fetchNepalRSS(f)));
-  const seen = new Set();
-  const combined = results.flat().filter(a => {
-    if (!a.link || seen.has(a.link)) return false;
-    seen.add(a.link);
-    return true;
-  });
-  setCached(cacheKey, combined);
-  return shuffle(combined);
-}
-
-// ===== CURRENTS API =====
+// ===== CURRENTS API (International) =====
 async function fetchNews(apiCategory = "", page = 1) {
   const cacheKey = "currents_" + (apiCategory || "top") + "_" + page;
   if (allNews[cacheKey]) return shuffle(allNews[cacheKey]);
@@ -203,6 +202,7 @@ async function showHomeView() {
   const breakingGrid = document.getElementById("breakingNewsGrid");
   if (breakingGrid) breakingGrid.innerHTML = '<div class="loader-wrap"><div class="loader"></div></div>';
 
+  // FIX: National region now correctly fetches Nepal news via Currents API
   const topNews = currentRegion === "national"
     ? await fetchAllNepalNews()
     : await fetchNews("");
@@ -275,10 +275,6 @@ async function showNepalView() {
 }
 
 // ===== RENDER BREAKING NEWS =====
-// Layout:
-//   [ BIG CARD (left, square/horizontal) ] [ Small Card A (top-right) ]
-//   [                                     ] [ Small Card B (bot-right) ]
-//   [ Small Card C ] [ Small Card D ]  ← bottom row, under big card only
 function renderBreakingNews(articles) {
   const grid = document.getElementById("breakingNewsGrid");
   if (!grid) return;
@@ -288,19 +284,19 @@ function renderBreakingNews(articles) {
   }
   grid.innerHTML = "";
 
-  // Big featured card — col 1, row 1 (square/horizontal)
+  // Big featured card
   const mainWrap = document.createElement("div");
   mainWrap.className = "featured-main";
   mainWrap.appendChild(createCard(articles[0], true));
   grid.appendChild(mainWrap);
 
-  // Right column — 2 cards stacked vertically beside the big card
+  // Right column — 2 cards stacked
   const rightCol = document.createElement("div");
   rightCol.className = "featured-right-col";
   [articles[1], articles[2]].filter(Boolean).forEach(a => rightCol.appendChild(createCard(a, false)));
   grid.appendChild(rightCol);
 
-  // Bottom row — 2 cards side by side below the big card
+  // Bottom row — 2 cards side by side
   const bottomArticles = [articles[3], articles[4]].filter(Boolean);
   if (bottomArticles.length) {
     const bottomRow = document.createElement("div");
@@ -492,7 +488,7 @@ async function performSearch(query) {
       source: "International",
     }));
     // Also search cached Nepal news locally
-    const nepalCached = getCached("nepal_all") || [];
+    const nepalCached = getCached("nepal_currents") || [];
     const q = query.trim().toLowerCase();
     const nepalMatches = nepalCached.filter(a =>
       (a.title || "").toLowerCase().includes(q) || (a.description || "").toLowerCase().includes(q));
@@ -579,11 +575,15 @@ function setupEventListeners() {
   });
 
   // Region dropdown
+  // FIX: Clear Nepal cache on every region toggle so stale empty results don't persist
   document.querySelectorAll("[data-region]").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
       currentRegion = link.dataset.region === currentRegion ? "" : link.dataset.region;
       allNews = {};
+      // Clear Nepal-related caches so fresh data is always fetched
+      localStorage.removeItem("nc_nepal_currents");
+      localStorage.removeItem("nc_nepal_currents_stale");
       showHomeView();
       document.getElementById("navLinks").classList.remove("open");
     });
